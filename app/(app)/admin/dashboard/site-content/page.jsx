@@ -273,7 +273,7 @@ export default function AdminSiteContentPage() {
       {activeTab === "homepage" && (
         <div>
           {/* Sub-tabs for Homepage Sections */}
-          <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
+          <div className="sc-subtabs" style={{ display: "flex", gap: 10, marginBottom: 20 }}>
             {[
               { id: "hero", label: "Hero Banner" },
               { id: "featured", label: "Featured Products" },

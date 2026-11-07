@@ -23,6 +23,13 @@ export default function AdminDashboardLayout({ children }) {
   const pathname = usePathname();
   const [authChecked, setAuthChecked] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  // Phone layout (slide-in sidebar, full-width content) for every admin page
+  // rendered inside this layout. (The page builder renders without it.)
+  const mobileReady = true;
+
+  useEffect(() => { setMobileNavOpen(false); }, [pathname]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -42,7 +49,7 @@ export default function AdminDashboardLayout({ children }) {
   };
 
   return (
-    <div className="admin-root">
+    <div className={`admin-root ${mobileReady ? "admin-mobile" : ""}`}>
       <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
       <style dangerouslySetInnerHTML={{
         __html: `
@@ -343,6 +350,105 @@ export default function AdminDashboardLayout({ children }) {
         }
         .receipt-lightbox-close:hover { background: rgba(255,255,255,0.2); }
 
+        /* ── MOBILE (only on routes marked mobile-ready) ── */
+        .admin-menu-btn, .admin-nav-backdrop { display: none; }
+        @media (max-width: 768px) {
+          .admin-mobile .admin-header { padding: 0 16px; }
+          .admin-mobile .admin-brand { font-size: 18px; }
+          .admin-mobile .admin-menu-btn {
+            display: flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; margin-right: 4px;
+            background: none; border: 1px solid var(--border2); border-radius: 8px;
+            color: var(--text); font-size: 18px; cursor: pointer;
+          }
+          .admin-mobile .admin-header-left { display: flex; align-items: center; gap: 10px; }
+          .admin-mobile .admin-sidebar {
+            position: fixed; top: 64px; left: 0; bottom: 0;
+            height: auto; width: 270px; max-width: 85vw; z-index: 150;
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+          }
+          .admin-mobile .admin-sidebar.open { transform: translateX(0); }
+          .admin-mobile .admin-nav-backdrop {
+            display: block; position: fixed; inset: 64px 0 0 0; z-index: 140;
+            background: rgba(0,0,0,0.55);
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+          }
+          .admin-mobile .admin-nav-backdrop.open { opacity: 1; pointer-events: auto; }
+          .admin-mobile .admin-content {
+            padding: 20px 16px 40px; max-height: none; overflow: visible; min-width: 0;
+          }
+          .admin-mobile .content-header { margin-bottom: 20px; }
+          /* The site-wide floating back button covers the page title here;
+             the header menu already handles navigation. */
+          body:has(.admin-mobile) .btn-page-back { display: none !important; }
+
+          /* Shared building blocks used across admin pages */
+          .admin-mobile .content-header { flex-wrap: wrap; gap: 12px; align-items: flex-start; }
+          .admin-mobile .grid,
+          .admin-mobile .form-row { grid-template-columns: 1fr; gap: 16px; }
+          .admin-mobile .card,
+          .admin-mobile .card-glass { padding: 16px; }
+          .admin-mobile .list-item { flex-wrap: wrap; gap: 10px; padding: 14px; }
+          .admin-mobile .list-item > * { min-width: 0; }
+          .admin-mobile .admin-content img,
+          .admin-mobile .admin-content video,
+          .admin-mobile .admin-content iframe { max-width: 100%; }
+          .admin-mobile .admin-content table { display: block; overflow-x: auto; max-width: 100%; }
+          .admin-mobile .admin-content th,
+          .admin-mobile .admin-content td { white-space: nowrap; }
+          .admin-mobile .admin-content code { overflow-wrap: anywhere; }
+          /* File pickers have a fixed intrinsic width; let them shrink */
+          .admin-mobile input[type="file"] { max-width: 100%; min-width: 0; font-size: 13px !important; }
+          /* Small inline button rows may wrap instead of running off the edge */
+          .admin-mobile [style*="display: flex; gap: 6px"],
+          .admin-mobile [style*="display: flex; gap: 10px; align-items: center"] { flex-wrap: wrap; }
+
+          /* Page headers with action buttons (Video Reels, Services Content):
+             title on top, buttons in a full-width row underneath */
+          .admin-mobile .admin-page-header { flex-wrap: wrap; gap: 16px; align-items: flex-start !important; margin-bottom: 20px !important; }
+          .admin-mobile .admin-page-header h1 { font-size: 22px !important; }
+          .admin-mobile .admin-page-header > div:last-child { width: 100%; }
+          .admin-mobile .admin-page-header > div:last-child button { flex: 1; }
+
+          /* Inline two/three-column form grids stack into one column */
+          .admin-mobile .admin-content [style*="grid-template-columns: 1fr 1fr"],
+          .admin-mobile .admin-content [style*="grid-template-columns: 1fr 1.5fr"] {
+            grid-template-columns: 1fr !important;
+          }
+
+          /* Site Content: homepage sub-tabs wrap instead of running off-screen */
+          .admin-mobile .sc-subtabs { flex-wrap: wrap; gap: 8px !important; }
+
+          /* Customer Queries: contact / request / photo stack */
+          .admin-mobile .cq-detail-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+          .admin-mobile .cq-detail-grid > * { min-width: 0; overflow-wrap: anywhere; }
+
+          /* Frame Catalog: stat cards in a 2-column grid */
+          .admin-mobile .fp-header { flex-wrap: wrap; gap: 14px; margin-bottom: 20px; }
+          .admin-mobile .fp-topbar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+          .admin-mobile .fp-topbar-card { padding: 14px; gap: 10px; min-width: 0; }
+          .admin-mobile .fp-topbar-value { font-size: 18px; }
+          .admin-mobile .fp-topbar-label { font-size: 10px; }
+          .admin-mobile .fp-bottom { grid-template-columns: 1fr; gap: 20px; }
+          .admin-mobile .fp-bottom > * { min-width: 0; }
+          .admin-mobile .fp-3col { grid-template-columns: 1fr; gap: 12px; }
+          .admin-mobile .fp-size-row { gap: 6px; }
+          .admin-mobile .fp-size-row > * { min-width: 0; }
+          .admin-mobile .fp-size-row input { width: 100%; min-width: 0; padding-left: 10px; padding-right: 8px; }
+          /* Frame rows: thumb + name on top, badges / price / actions below */
+          .admin-mobile .fp-item { flex-wrap: wrap; gap: 8px 12px; padding: 12px 8px; }
+          .admin-mobile .fp-item-info { flex: 1 1 calc(100% - 64px); }
+          .admin-mobile .fp-item-actions { margin-left: auto; }
+
+          /* Sales Analytics: charts fit the column */
+          .admin-mobile .charts-container > * { min-width: 0; }
+          .admin-mobile .chart-box { padding: 16px; }
+          .admin-mobile .chart-header { flex-wrap: wrap; gap: 10px; }
+          .admin-mobile .content-header h2 { font-size: 22px; }
+        }
+
         /* ── ANIMATIONS ── */
         @keyframes fadeInLightbox { from { opacity: 0; } to { opacity: 1; } }
         @keyframes fadeInUp {
@@ -368,9 +474,20 @@ export default function AdminDashboardLayout({ children }) {
       ) : (
         <>
           <header className="admin-header">
-        <div className="admin-brand">
-          Yaadein
-          <span className="admin-brand-badge">Admin</span>
+        <div className="admin-header-left">
+          <button
+            type="button"
+            className="admin-menu-btn"
+            aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileNavOpen}
+            onClick={() => setMobileNavOpen((o) => !o)}
+          >
+            {mobileNavOpen ? "✕" : "☰"}
+          </button>
+          <div className="admin-brand">
+            Yaadein
+            <span className="admin-brand-badge">Admin</span>
+          </div>
         </div>
         <div className="admin-header-actions">
           <button
@@ -383,13 +500,17 @@ export default function AdminDashboardLayout({ children }) {
       </header>
 
       <div className="admin-layout">
-        <aside className="admin-sidebar">
+        <div
+          className={`admin-nav-backdrop ${mobileNavOpen ? "open" : ""}`}
+          onClick={() => setMobileNavOpen(false)}
+        />
+        <aside className={`admin-sidebar ${mobileNavOpen ? "open" : ""}`}>
           <div className="sidebar-section-label">Navigation</div>
           {NAV_ITEMS.map((item) => (
             <button
               key={item.href}
               className={`nav-link ${isActive(item.href) ? 'active' : ''}`}
-              onClick={() => router.push(item.href)}
+              onClick={() => { setMobileNavOpen(false); router.push(item.href); }}
             >
               <span className="nav-icon" dangerouslySetInnerHTML={{ __html: item.icon }} />
               {item.label}

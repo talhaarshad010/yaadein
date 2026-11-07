@@ -38,7 +38,10 @@ export default function BackButton() {
           transform: translateX(-2px);
         }
         @media (max-width: 580px) {
+          /* On phones a fixed button sits on top of the content as you scroll;
+             pin it to the top of the page instead so it scrolls away. */
           .btn-page-back {
+            position: absolute;
             top: 84px;
             left: 16px;
             width: 36px;

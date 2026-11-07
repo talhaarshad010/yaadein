@@ -545,7 +545,7 @@ export default function CustomerQueriesPage() {
                       </div>
                     </div>
 
-                    <div style={{ display: "grid", gridTemplateColumns: q.photo ? "1fr 1fr 160px" : "1fr 1fr", gap: "24px", alignItems: "start" }}>
+                    <div className="cq-detail-grid" style={{ display: "grid", gridTemplateColumns: q.photo ? "1fr 1fr 160px" : "1fr 1fr", gap: "24px", alignItems: "start" }}>
                       {/* Who to call */}
                       <div>
                         <h4 style={{ fontSize: "12px", color: "var(--text2)", textTransform: "uppercase", marginBottom: "8px" }}>Customer</h4>

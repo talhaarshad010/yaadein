@@ -1301,6 +1301,21 @@ function FrameCustomizer() {
           .bottom-bar { padding: 14px 20px; }
           .btn-primary { padding: 10px 16px; font-size: 12px; }
           .btn-ghost { padding: 10px 16px !important; font-size: 12px !important; }
+
+          /* Three equal buttons that each stay on one line */
+          .bottom-bar { padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); gap: 8px; justify-content: stretch; }
+          .bottom-bar > button {
+            flex: 1 1 0;
+            min-width: 0;
+            white-space: nowrap;
+            padding: 12px 8px !important;
+            font-size: 11px !important;
+            letter-spacing: 0.06em !important;
+          }
+
+          /* The studio has its own header; the floating back button only
+             covers the sidebar tabs and the frame preview here. */
+          .btn-page-back { display: none !important; }
         }
       ` }} />
 
