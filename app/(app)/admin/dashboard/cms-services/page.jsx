@@ -505,7 +505,7 @@ export default function AdminServicesPage() {
 
   return (
     <div style={{ maxWidth: 1200, margin: "0 auto", padding: "10px 0 60px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 30 }}>
+      <div className="admin-page-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 30 }}>
         <div>
           <h1 style={{ fontFamily: "var(--font-serif)", fontSize: 28, color: "var(--text)" }}>
             Services Content Manager

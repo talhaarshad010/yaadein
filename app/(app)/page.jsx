@@ -3774,7 +3774,6 @@ import CardDescription from "./components/CardDescription";
 import { useHomePageContent } from "../lib/cms";
 import { SectionLayoutRenderer } from "@/lib/pageBuilder/sectionLayout";
 import FrameLoader from "./components/FrameLoader";
-import ScratchReveal from "./components/ScratchReveal";
 
 // Persistent Cart LocalStorage Helpers
 const getCart = () => {
@@ -7460,6 +7459,7 @@ export default function HomePage() {
           .exquisite-frame-component { width: 290px; flex-shrink: 0; }
           .lamp-rod { height: 60px; }
           .exquisite-wood-frame { width: 290px !important; height: 464px !important; aspect-ratio: 320 / 512 !important; flex-shrink: 0; }
+          .exquisite-content,
           .services-section .exquisite-content {
             align-items: center;
             text-align: center;
@@ -8133,8 +8133,6 @@ export default function HomePage() {
         ctx={{ isEditor: false, lightOn: true }}
       />
 
-      {/* Lottery-style scratch-off over the artwork inside each frame */}
-      <ScratchReveal />
       {/* FOOTER */}
       <Footer />
 

@@ -2040,11 +2040,24 @@ export default function CatalogPage() {
             z-index: 50;
             display: flex !important;
           }
-          .carousel-arrow-prev {
-            left: 10px;
+          /* Arrows sit side by side under the card instead of over its edge */
+          .carousel-viewport-wrapper {
+            flex-wrap: wrap;
+            justify-content: center;
+            column-gap: 16px;
+            row-gap: 8px;
           }
+          .carousel-viewport-wrapper .carousel-viewport {
+            order: -1;
+            flex: 0 0 100%;
+          }
+          .carousel-arrow,
+          .carousel-arrow-prev,
           .carousel-arrow-next {
-            right: 10px;
+            position: static;
+            transform: none;
+            width: 44px;
+            height: 44px;
           }
           .view-all-card {
             flex: 0 0 auto;

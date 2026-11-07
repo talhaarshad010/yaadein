@@ -61,6 +61,31 @@ export default function OrdersPage() {
 
   return (
     <>
+      <style dangerouslySetInnerHTML={{ __html: `
+        @media (max-width: 768px) {
+          .order-filters-bar { padding: 14px; gap: 10px; }
+          .order-filters-bar .filter-search-wrap { flex: 1 1 100%; min-width: 0; }
+          .order-filters-bar .filter-search { width: 100%; min-width: 0; }
+          .order-filters-bar .filter-group { flex: 1 1 calc(50% - 5px); min-width: 0; }
+          .order-filters-bar .filter-select { width: 100%; min-width: 0; }
+          .order-filters-bar .filter-clear-btn { flex: 1 1 100%; padding: 10px 14px; }
+
+          .order-card { padding: 16px; }
+          .order-header { flex-direction: column; gap: 10px; }
+          .order-header-id { display: flex; flex-direction: column; gap: 2px; }
+          .order-header-id > span { margin-left: 0 !important; }
+          .order-header-actions { gap: 10px !important; width: 100%; }
+          .order-header-actions .order-total { flex: 1 1 100%; order: -1; font-size: 14px; }
+          .order-header-actions select { flex: 1 1 auto; padding: 10px 12px !important; }
+          .order-header-actions button { padding: 10px 14px !important; }
+          .order-body { grid-template-columns: 1fr !important; gap: 20px !important; }
+          .order-contact > span { overflow-wrap: anywhere; }
+          .order-contact button { padding: 6px 10px !important; }
+          .order-item { padding: 10px !important; gap: 12px !important; }
+          .order-item-row { flex-wrap: wrap; gap: 4px 8px; }
+          .order-item-row > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+        }
+      ` }} />
       <div className="content-header">
         <div>
           <h2>Customer Orders</h2>
@@ -132,13 +157,13 @@ export default function OrdersPage() {
           {filtered.map(o => (
             <div key={o.docId} className="order-card">
               <div className="order-header">
-                <div>
+                <div className="order-header-id">
                   <strong style={{ color: "var(--accent)", fontSize: "16px" }}>{o.orderId}</strong>
                   <span style={{ marginLeft: "12px", fontSize: "12px", color: "var(--text2)" }}>
                     {o.createdAt ? new Date(o.createdAt).toLocaleString() : "Just now"}
                   </span>
                 </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
+                <div className="order-header-actions" style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
                   <select
                     value={o.status || "Pending"}
                     onChange={(e) => handleUpdateOrderStatus(o.docId, e.target.value)}
@@ -155,7 +180,7 @@ export default function OrdersPage() {
                     <option value="Delivered">Delivered</option>
                     <option value="Cancelled">Cancelled</option>
                   </select>
-                  <strong style={{ color: "#FFF" }}>Grand Total: Rs. {o.total?.toLocaleString()} ({o.paymentMethod || "COD"})</strong>
+                  <strong className="order-total" style={{ color: "#FFF" }}>Grand Total: Rs. {o.total?.toLocaleString()} ({o.paymentMethod || "COD"})</strong>
                   <button
                     onClick={() => handleDeleteOrder(o.docId)}
                     style={{
@@ -170,11 +195,11 @@ export default function OrdersPage() {
                   </button>
                 </div>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: "24px" }}>
+              <div className="order-body" style={{ display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: "24px" }}>
                 <div>
                   <h4 style={{ fontSize: "12px", color: "var(--text2)", textTransform: "uppercase", marginBottom: "8px" }}>Customer Info</h4>
                   <p style={{ fontSize: "13px" }}><strong>{o.customer?.name}</strong></p>
-                  <p style={{ fontSize: "13px", display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+                  <p className="order-contact" style={{ fontSize: "13px", display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
                     <span>{o.customer?.phone} | {o.customer?.email}</span>
                     <button
                       onClick={() => {
@@ -258,7 +283,7 @@ export default function OrdersPage() {
                   <h4 style={{ fontSize: "12px", color: "var(--text2)", textTransform: "uppercase", marginBottom: "12px" }}>Order Items</h4>
                   <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
                     {o.items?.map((item, i) => (
-                      <div key={i} style={{
+                      <div key={i} className="order-item" style={{
                         display: "flex", gap: "16px", alignItems: "center",
                         background: "var(--bg)", border: "1px solid var(--border)",
                         borderRadius: "8px", padding: "10px 14px"
@@ -274,12 +299,12 @@ export default function OrdersPage() {
                             <div style={{ flex: 1, background: "#2D2822", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px", color: "rgba(201,168,76,0.15)" }}>Y</div>
                           )}
                         </div>
-                        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "4px" }}>
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <div className="order-item-info" style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: "4px" }}>
+                          <div className="order-item-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                             <span style={{ fontWeight: "700", color: "#FFF", fontSize: "14px" }}>{item.quantity}x {item.frameName}</span>
                             <span style={{ color: "var(--accent)", fontWeight: "700", fontSize: "14px" }}>{item.price}</span>
                           </div>
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "11px", color: "var(--text2)" }}>
+                          <div className="order-item-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "11px", color: "var(--text2)" }}>
                             <span>{item.size ? `${item.size} • ` : ""}{item.orientation === "landscape" ? "Landscape" : "Portrait"}{item.rotation ? ` • Rotated ${item.rotation}°` : ""}</span>
                             {item.image && (
                               <a href={item.image} target="_blank" rel="noopener noreferrer" style={{

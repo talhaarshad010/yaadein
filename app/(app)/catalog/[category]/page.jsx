@@ -1023,7 +1023,7 @@ export default function CategoryPage({ params }) {
             transform: scale(0.6) !important;
             transform-origin: top center !important;
             margin-top: -10px !important;
-            margin-bottom: -70px !important;
+            margin-bottom: -40px !important;
           }
           .catalog-lamp .lamp-rod {
             height: 120px !important;

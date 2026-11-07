@@ -653,12 +653,294 @@ export default function ServicesPage() {
           .service-card { grid-template-columns: 1fr !important; padding: 24px; gap: 20px; }
           .service-visual { order: -1 !important; aspect-ratio: 16/9; }
         }
+        /* CART DRAWER SLIDE-OVER */
+        .cart-drawer-overlay {
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.85);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          z-index: 2000;
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.3s ease;
+        }
+        .cart-drawer-overlay.open {
+          opacity: 1;
+          pointer-events: auto;
+        }
+        .cart-drawer {
+          position: fixed;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          width: 400px;
+          max-width: 100vw;
+          background: linear-gradient(135deg, var(--surface) 0%, var(--bg) 100%);
+          border-left: 3px solid #1C0F07;
+          outline: 1px solid var(--border);
+          outline-offset: -4px;
+          z-index: 2001;
+          transform: translateX(100%);
+          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          display: flex;
+          flex-direction: column;
+          box-shadow: -10px 0 40px rgba(0,0,0,0.8);
+        }
+        .cart-drawer.open {
+          transform: translateX(0);
+        }
+        .cart-drawer-header {
+          padding: 24px;
+          border-bottom: 2px solid #1C0F07;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .cart-drawer-header h3 {
+          font-family: var(--font-display);
+          font-size: 20px;
+          color: var(--accent);
+        }
+        .cart-close-btn {
+          background: none;
+          border: none;
+          color: var(--text2);
+          font-size: 28px;
+          cursor: pointer;
+          line-height: 1;
+          transition: color 0.15s ease;
+        }
+        .cart-close-btn:hover {
+          color: var(--accent);
+        }
+        .cart-drawer-body {
+          flex: 1;
+          overflow-y: auto;
+          padding: 24px;
+        }
+        .cart-empty {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+          text-align: center;
+          gap: 16px;
+          color: var(--text2);
+        }
+        .cart-empty-icon {
+          font-size: 48px;
+        }
+        
+        .cart-items-list {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+        }
+        .cart-item {
+          display: flex;
+          gap: 16px;
+          background: var(--surface2);
+          border: 3px solid #1C0F07;
+          outline: 1px solid var(--border);
+          outline-offset: -3px;
+          border-radius: var(--radius);
+          padding: 12px;
+          position: relative;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+        .cart-item-thumb {
+          width: 70px;
+          height: 70px;
+          border-radius: var(--radius);
+          overflow: hidden;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+          display: flex;
+          position: relative;
+          padding: 6px;
+        }
+        .cart-item-thumb img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: var(--radius);
+        }
+        .cart-item-thumb-placeholder {
+          flex: 1;
+          background: #2D2822;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: rgba(201, 168, 76, 0.2);
+          font-size: 24px;
+        }
+        
+        .cart-item-details {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+        .cart-item-name {
+          font-family: var(--font-display);
+          font-size: 15px;
+          color: var(--text);
+        }
+        .cart-item-meta {
+          font-family: var(--font-typewriter);
+          font-size: 10px;
+          color: var(--text2);
+          text-transform: uppercase;
+        }
+        .cart-item-price {
+          font-family: var(--font-typewriter);
+          font-size: 14px;
+          font-weight: 700;
+          color: var(--accent);
+        }
+        .cart-item-qty-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-top: 4px;
+        }
+        .qty-btn {
+          width: 24px;
+          height: 24px;
+          background: var(--surface3);
+          border: 1px solid var(--border2);
+          border-radius: var(--radius);
+          color: var(--text);
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          line-height: 1;
+          transition: all 0.15s ease;
+        }
+        .qty-btn:hover {
+          background: var(--accent);
+          color: #1A1100;
+          border-color: var(--accent);
+        }
+        .qty-val {
+          font-family: var(--font-typewriter);
+          font-size: 12px;
+          font-weight: 500;
+          color: var(--text);
+        }
+        
+        .cart-item-remove {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          background: none;
+          border: none;
+          color: var(--text2);
+          font-size: 18px;
+          cursor: pointer;
+          line-height: 1;
+          transition: color 0.15s ease;
+        }
+        .cart-item-remove:hover {
+          color: #FF5A5A;
+        }
+        
+        .cart-drawer-footer {
+          padding: 24px;
+          border-top: 2px solid #1C0F07;
+          background: var(--surface);
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+        .cart-summary-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 14px;
+          color: var(--text2);
+        }
+        .cart-summary-total {
+          font-family: var(--font-typewriter);
+          font-size: 22px;
+          color: var(--accent);
+        }
+        .btn-checkout-primary {
+          display: block;
+          width: 100%;
+          text-align: center;
+          padding: 14px;
+        }
       ` }} />
 
       <Navbar onCartOpen={() => setCartOpen(true)} />
 
       <SectionLayoutRenderer pageId="services" nodes={servicesSectionNodes} ctx={{ isEditor: false, lightOn: true }} />
       <Footer />
+
+      {/* CART DRAWER SLIDE-OVER */}
+      <div className={`cart-drawer-overlay ${cartOpen ? "open" : ""}`} onClick={() => setCartOpen(false)} />
+      <div className={`cart-drawer ${cartOpen ? "open" : ""}`}>
+        <div className="cart-drawer-header">
+          <h3>Shopping Cart</h3>
+          <button className="cart-close-btn" onClick={() => setCartOpen(false)}>×</button>
+        </div>
+        <div className="cart-drawer-body">
+          {cartItems.length === 0 ? (
+            <div className="cart-empty">
+              <span className="cart-empty-icon">👜</span>
+              <p>Your shopping cart is empty.</p>
+              <button className="btn-nav-primary" style={{ marginTop: "16px" }} onClick={() => setCartOpen(false)}>
+                Explore Collections
+              </button>
+            </div>
+          ) : (
+            <div className="cart-items-list">
+              {cartItems.map((item, idx) => (
+                <div key={idx} className="cart-item">
+                  <div className="cart-item-thumb" style={{ background: item.frameColor }}>
+                    {item.image ? (
+                      <img src={item.image} alt={item.frameName} />
+                    ) : (
+                      <div className="cart-item-thumb-placeholder">Y</div>
+                    )}
+                  </div>
+                  <div className="cart-item-details">
+                    <div className="cart-item-name">{item.frameName}</div>
+                    <div className="cart-item-meta">
+                      {item.size} / {item.orientation}
+                    </div>
+                    <div className="cart-item-price">{item.price}</div>
+                    <div className="cart-item-qty-row">
+                      <button className="qty-btn" onClick={() => updateQuantity(idx, -1)}>–</button>
+                      <span className="qty-val">{item.quantity}</span>
+                      <button className="qty-btn" onClick={() => updateQuantity(idx, 1)}>+</button>
+                    </div>
+                  </div>
+                  <button className="cart-item-remove" onClick={() => removeCartItem(idx)} title="Remove Item">
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        {cartItems.length > 0 && (
+          <div className="cart-drawer-footer">
+            <div className="cart-summary-row">
+              <span>Subtotal</span>
+              <span className="cart-summary-total">Rs. {getCartSubtotal().toLocaleString()}</span>
+            </div>
+            <p className="cart-footer-note">Shipping and taxes calculated at checkout.</p>
+            <a href="/checkout" className="btn-checkout-primary">
+              Proceed to Checkout
+            </a>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

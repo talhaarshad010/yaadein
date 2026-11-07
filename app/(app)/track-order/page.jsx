@@ -1710,7 +1710,8 @@ export default function TrackOrderPage() {
             height: 120px !important;
           }
 
-          .track-section { padding: 40px 20px; }
+          .track-section { padding: 40px 16px; }
+          .track-card { padding: 28px 20px; }
           .order-info-grid { grid-template-columns: 1fr; gap: 30px; }
           .search-form-group { flex-direction: column; }
           .btn-track { width: 100%; }

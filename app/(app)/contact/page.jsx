@@ -1606,7 +1606,8 @@ export default function ContactPage() {
             height: 120px !important;
           }
 
-          .contact-section { padding: 40px 20px; }
+          .contact-section { padding: 40px 16px; }
+          .contact-card { padding: 28px 20px !important; }
           .contact-container { grid-template-columns: 1fr; gap: 40px; }
           .map-container { min-height: 250px; }
           .info-grid { grid-template-columns: 1fr; }

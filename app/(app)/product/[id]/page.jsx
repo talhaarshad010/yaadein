@@ -2244,6 +2244,49 @@ function ProductDetailContent({ params }) {
             font-size: 24px;
           }
         }
+
+        /* Phones: stack the copy above the thumbnail strip so they never overlap */
+        @media (max-width: 650px) {
+          .wall-gallery-slider-section {
+            height: 560px;
+          }
+          .wall-slider-content {
+            top: 92px;
+            right: 20px;
+            width: auto;
+            transform: none;
+          }
+          .wall-slider-item:nth-of-type(2) .wall-slider-content {
+            animation-name: showWallContentMobile;
+          }
+          @keyframes showWallContentMobile {
+            0% { filter: blur(8px); transform: translateY(40px); opacity: 0; }
+            100% { opacity: 1; filter: blur(0); transform: none; }
+          }
+          .wall-slider-content-title {
+            font-size: 22px;
+            margin-bottom: 8px;
+          }
+          .wall-slider-content-description {
+            margin-bottom: 14px;
+          }
+          .wall-slider-item {
+            top: auto;
+            bottom: 100px;
+            transform: none;
+          }
+          .wall-slider-item:nth-child(1), .wall-slider-item:nth-child(2) {
+            top: 0;
+            bottom: auto;
+          }
+          .wall-slider-nav {
+            bottom: 28px;
+          }
+          .wall-slider-nav-btn {
+            width: 44px;
+            height: 44px;
+          }
+        }
       ` }} />
 
       <Navbar onCartOpen={() => setCartOpen(true)} />
